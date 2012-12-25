@@ -1,6 +1,10 @@
 package oliver.app.batch.service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,10 +21,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubscriptionService {
 
+    @Resource
+    MailService mailService;
+
     /**
      * 天津首创爱这城最新消息
      */
-    public void getMyHousingInfo() {
+    public void notifyMyHousingInfo() {
 
         try {
             Document document = Jsoup.connect("http://aizhechengsc.soufun.com/").get();
@@ -29,6 +36,18 @@ public class SubscriptionService {
             String price = elements.select("span.arial20_red").first().ownText();
             // 房价走势
             String priceTendencyLink = elements.select("a:contains(房价走势)").first().attr("href");
+
+            // document = Jsoup.connect(priceTendencyLink).get();
+
+            // String priceTendencyDataLink =
+            // document.select("#zsli022").select("iframe")
+            // .attr("abs:src");
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("newPrice", price);
+            data.put("link", priceTendencyLink);
+
+            mailService.send("housingInfo", data);
 
         } catch (IOException e) {
         }
@@ -43,7 +62,14 @@ public class SubscriptionService {
             String price = elements.select("span.arial20_red").first().ownText();
             // 房价走势
             String priceTendencyLink = elements.select("a:contains(房价走势)").first().attr("href");
-            System.out.println(priceTendencyLink);
+
+            document = Jsoup.connect(priceTendencyLink).get();
+
+            String priceTendencyDataLink = document.select("#zsli022").select("iframe")
+                    .attr("abs:src");
+
+            String html = Jsoup.connect(priceTendencyDataLink).get().html();
+
         } catch (IOException e) {
         }
 
