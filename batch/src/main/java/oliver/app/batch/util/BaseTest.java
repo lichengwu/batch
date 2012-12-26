@@ -10,11 +10,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Log4jConfigurer;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**
  * BaseTest for extends
@@ -28,7 +27,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class BaseTest {
 
     @Resource
-    ComboPooledDataSource dataSource;
+    JdbcTemplate jdbcTemplate;
 
     @BeforeClass
     public static void setUpBeforeClass() {
@@ -43,7 +42,7 @@ public class BaseTest {
     @Before
     public final void before() {
         // init configuration
-        Configuration.reload(dataSource);
+        Configuration.reload(jdbcTemplate.getDataSource());
     }
 
     @Test

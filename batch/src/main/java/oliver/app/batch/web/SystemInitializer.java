@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * custom setting after Ioc inited
@@ -31,8 +30,7 @@ public class SystemInitializer implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         // load configuration
-        ComboPooledDataSource dataSource = applicationContext.getBean("dataSource",
-                ComboPooledDataSource.class);
-        Configuration.reload(dataSource);
+        JdbcTemplate jdbcTemplate = applicationContext.getBean("jdbcTemplate", JdbcTemplate.class);
+        Configuration.reload(jdbcTemplate.getDataSource());
     }
 }
