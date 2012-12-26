@@ -61,6 +61,7 @@
     <mvc:resources mapping="/js/**" location="/js/"/>
     <mvc:resources mapping="/css/**" location="/css/"/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="favicon.ico" location="/favicon.ico"/>
 
     <mvc:interceptors>
         <!-- request log interceptor -->
