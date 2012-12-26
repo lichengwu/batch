@@ -149,6 +149,14 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- http client -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
+
         <!-- Servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -211,7 +219,7 @@
         <pluginRepository>
             <id>repository.springframework.maven.milestone</id>
             <name>Spring Framework Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
+            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/org/acegisecurity/</url>
         </pluginRepository>
     </pluginRepositories>
 </project>
