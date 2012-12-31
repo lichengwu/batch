@@ -6,15 +6,33 @@
 
     <cache/>
 
+    <sql id="proxyFullColumn">
+        id,status,type,ip,port,username,password,add_time as addTime,update_time as updateTime,speed,note
+    </sql>
+
+    <resultMap id="proxyResultMap" type="Proxy" autoMapping="true">
+        <association property="addTime" column="add_time"/>
+        <association property="updateTime" column="update_time"/>
+    </resultMap>
+
     <select id="getById" resultType="Proxy" parameterType="int">
-        SELECT * from proxy where id=#{id}
+        SELECT
+        <include refid="proxyFullColumn"></include>
+        from proxy where id=#{id}
+    </select>
+
+    <select id="findByIp" resultType="Proxy" parameterType="string">
+        SELECT
+        <include refid="proxyFullColumn"/>
+        from proxy where inet_ntoa(ip)=#{ip}
+
     </select>
 
     <insert id="insert" parameterType="oliver.app.batch.domain.Proxy">
-        INSERT INTO Proxy
-        (status,ip,port,username,password,add_time,update_time,speed)
+        INSERT INTO proxy
+        (status,ip,port,type,username,password,add_time,update_time,speed,note)
         VALUES
-        (#{status},inet_aton(#{ip}),#{port},#{username},#{password},#{addTime},#{updateTime},#{speed})
+        (#{status},inet_aton(#{ip}),#{port},#{type},#{username},#{password},#{addTime},#{updateTime},#{speed},#{note})
     </insert>
 
 </mapper>

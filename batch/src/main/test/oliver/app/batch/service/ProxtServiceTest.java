@@ -17,8 +17,8 @@ public class ProxtServiceTest extends BaseTest{
     ProxyService proxyService;
 
     @Test
-    public void test(){
-        proxyService.save();
+    public void testFetch(){
+        proxyService.fetch1();
 
     }
 }

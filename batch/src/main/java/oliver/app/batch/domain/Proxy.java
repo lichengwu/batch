@@ -20,9 +20,11 @@ public class Proxy implements Serializable {
     private Integer id;
 
     /**
-     * 1:ok,2:expired,3:recovered
+     * {@link oliver.app.batch.constant.ProxyStatus}
      */
     private Integer status;
+
+    private Integer type;
 
     /**
      * proxy id
@@ -59,6 +61,11 @@ public class Proxy implements Serializable {
      */
     private Integer speed;
 
+    /**
+     * note
+     */
+    private String note;
+
     public Integer getId() {
         return id;
     }
@@ -73,6 +80,14 @@ public class Proxy implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getIp() {
@@ -129,5 +144,23 @@ public class Proxy implements Serializable {
 
     public void setSpeed(Integer speed) {
         this.speed = speed;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "Proxy{" +
+                "ip='" + ip + '\'' +
+                ", port=" + port +
+                ", type=" + type +
+                ", status=" + status +
+                '}';
     }
 }

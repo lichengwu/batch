@@ -13,7 +13,7 @@ import oliver.app.batch.domain.Proxy;
  */
 public interface ProxyMapper {
 
-    public Proxy getById(Integer id);
+    Proxy getById(Integer id);
 
     /**
      * get top n proxy by speed
@@ -21,13 +21,21 @@ public interface ProxyMapper {
      * @param topN
      * @return
      */
-    public List<Proxy> getTopProxy(int topN);
+    List<Proxy> getTopProxy(int topN);
 
     /**
      * persistence proxy
      * 
      * @param proxy
      */
-    public void insert(Proxy proxy);
+    void insert(Proxy proxy);
+
+    /**
+     * get {@link Proxy} by ip address
+     * 
+     * @param ip
+     * @return
+     */
+    Proxy findByIp(String ip);
 
 }
