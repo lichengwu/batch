@@ -54,6 +54,11 @@ public class Proxy implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * proxy speed
+     */
+    private Integer speed;
+
     public Integer getId() {
         return id;
     }
@@ -116,5 +121,13 @@ public class Proxy implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Integer speed) {
+        this.speed = speed;
     }
 }

@@ -23,21 +23,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class SimpleJbdcTest {
 
-    @Resource
-    DataSource dataSource;
-
-    @Transactional
-    public List<Map> findAll() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        return jdbcTemplate.query("select * from current_states", new RowMapper<Map>() {
-            public Map mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Map s = new HashMap();
-                s.put("id", rs.getLong("id"));
-                s.put("code", rs.getString("state_code"));
-                s.put("name", rs.getString("name"));
-                return s;
-            }
-        });
-    }
+    // @Resource
+    // DataSource dataSource;
+    //
+    // @Transactional
+    // public List<Map> findAll() {
+    // final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+    // return jdbcTemplate.query("select * from current_states", new
+    // RowMapper<Map>() {
+    // public Map mapRow(ResultSet rs, int rowNum) throws SQLException {
+    // Map s = new HashMap();
+    // s.put("id", rs.getLong("id"));
+    // s.put("code", rs.getString("state_code"));
+    // s.put("name", rs.getString("name"));
+    // return s;
+    // }
+    // });
+    // }
 
 }

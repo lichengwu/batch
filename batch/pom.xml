@@ -50,6 +50,12 @@
             <artifactId>aspectjrt</artifactId>
             <version>1.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
         <!-- freemarker -->
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -156,6 +162,27 @@
             <version>4.2.2</version>
         </dependency>
 
+        <!-- cglib -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+        <!-- mybatis spring-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
 
         <!-- Servlet -->
         <dependency>
@@ -219,7 +246,7 @@
         <pluginRepository>
             <id>repository.springframework.maven.milestone</id>
             <name>Spring Framework Maven Milestone Repository</name>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/org/acegisecurity/</url>
+            <url>http://repository.sonatype.org/content/groups/public/</url>
         </pluginRepository>
     </pluginRepositories>
 </project>

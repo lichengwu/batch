@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="oliver.app.batch.persistence.ProxyMapper">
+
+    <cache/>
+
+    <select id="getById" resultType="Proxy" parameterType="int">
+        SELECT * from proxy where id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="oliver.app.batch.domain.Proxy">
+        INSERT INTO Proxy
+        (status,ip,port,username,password,add_time,update_time,speed)
+        VALUES
+        (#{status},inet_aton(#{ip}),#{port},#{username},#{password},#{addTime},#{updateTime},#{speed})
+    </insert>
+
+</mapper>

@@ -40,7 +40,7 @@ public class TestController {
     @RequestMapping("/index")
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("/test/index");
-        mv.addObject("data", test.findAll().toString());
+        mv.addObject("data", "sss");
         subscriptionService.notifyMyHousingInfo();
         return mv;
     }
