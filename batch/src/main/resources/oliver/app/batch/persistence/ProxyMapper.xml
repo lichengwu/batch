@@ -10,12 +10,13 @@
         id,status,type,ip,port,username,password,add_time as addTime,update_time as updateTime,speed,note
     </sql>
 
-    <resultMap id="proxyResultMap" type="Proxy" autoMapping="true">
-        <association property="addTime" column="add_time"/>
-        <association property="updateTime" column="update_time"/>
+    <resultMap id="proxyList" type="Proxy" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="addTime" column="add_time"/>
     </resultMap>
 
-    <select id="getById" resultType="Proxy" parameterType="int">
+    <select id="findById" resultType="Proxy" parameterType="int">
         SELECT
         <include refid="proxyFullColumn"></include>
         from proxy where id=#{id}
@@ -34,5 +35,25 @@
         VALUES
         (#{status},inet_aton(#{ip}),#{port},#{type},#{username},#{password},#{addTime},#{updateTime},#{speed},#{note})
     </insert>
+
+    <select id="findAll" resultType="Proxy">
+        select * from proxy
+    </select>
+
+    <update id="update" parameterType="Proxy">
+        UPDATE proxy
+        SET
+        status = #{status},
+        type = #{type},
+        ip = #{ip},
+        port = #{port},
+        username = #{username},
+        password = #{password},
+        add_time = #{addTime},
+        update_time = #{updateTime},
+        speed = #{speed},
+        note = #{note}
+        WHERE id=${id};
+    </update>
 
 </mapper>

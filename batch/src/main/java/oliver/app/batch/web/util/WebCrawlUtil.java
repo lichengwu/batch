@@ -1,16 +1,26 @@
 package oliver.app.batch.web.util;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.List;
+
+import javax.net.ssl.SSLException;
 
 import oliver.app.batch.domain.Proxy;
 
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.protocol.ExecutionContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +34,47 @@ import org.slf4j.LoggerFactory;
  */
 public final class WebCrawlUtil {
 
-    private final long DEFAULT_TIMEOUT = 3;
+    private static final HttpRequestRetryHandler RETRY_HANDLER = new HttpRequestRetryHandler() {
+
+        public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
+            if (executionCount >= 3) {
+                // Do not retry if over max retry count
+                return false;
+            }
+            if (exception instanceof InterruptedIOException) {
+                // Timeout
+                return true;
+            }
+            if (exception instanceof UnknownHostException) {
+                // Unknown host
+                return false;
+            }
+            if (exception instanceof ConnectException) {
+                // Connection refused
+                return true;
+            }
+            if (exception instanceof SSLException) {
+                // SSL handshake exception
+                return false;
+            }
+            HttpRequest request = (HttpRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
+            boolean idempotent = !(request instanceof HttpEntityEnclosingRequest);
+            if (idempotent) {
+                // Retry if the request is considered idempotent
+                return true;
+            }
+            return true;
+        }
+
+    };
+
+    private final int DEFAULT_TIMEOUT = 3000;
 
     private static final Logger log = LoggerFactory.getLogger(WebCrawlUtil.class);
 
     private List<Proxy> proxies;
 
-    private long timeout;
+    private int timeout;
 
     private WebCrawlUtil() {
     }
@@ -67,7 +111,10 @@ public final class WebCrawlUtil {
      */
     public String getHTML(String url) {
         String html = null;
-        HttpClient client = new DefaultHttpClient();
+        DefaultHttpClient client = new DefaultHttpClient();
+        client.setHttpRequestRetryHandler(RETRY_HANDLER);
+
+        // set proxy
         if (proxies != null) {
             Proxy proxy = proxies.get((int) Math.random() * proxies.size() % proxies.size());
             HttpHost host = new HttpHost(proxy.getIp(), proxy.getPort());
@@ -75,6 +122,10 @@ public final class WebCrawlUtil {
         }
 
         HttpGet get = new HttpGet(url);
+        // set timeout
+        HttpConnectionParams.setConnectionTimeout(get.getParams(), getTimeout());
+        // set socket timeout
+        HttpConnectionParams.setSoTimeout(get.getParams(), getTimeout());
         try {
             HttpResponse response = client.execute(get);
 
@@ -95,7 +146,7 @@ public final class WebCrawlUtil {
      * 
      * @return
      */
-    public long getTimeout() {
+    public int getTimeout() {
         return timeout;
     }
 
@@ -104,11 +155,46 @@ public final class WebCrawlUtil {
      * 
      * @param timeout
      */
-    public void setTimeout(long timeout) {
+    public void setTimeout(int timeout) {
         if (timeout == 0) {
             timeout = DEFAULT_TIMEOUT;
         }
         this.timeout = timeout;
+    }
+
+    /**
+     * test whether the proxy is available
+     * 
+     * @param proxy
+     *            proxy
+     * @return
+     */
+    public static boolean testProxy(Proxy proxy, Integer timeout) {
+
+        DefaultHttpClient client = new DefaultHttpClient();
+        client.setHttpRequestRetryHandler(RETRY_HANDLER);
+        // set proxy
+        HttpHost host = new HttpHost(proxy.getIp(), proxy.getPort());
+        client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, host);
+
+        HttpGet get = new HttpGet("http://www.baidu.com");
+        // set timeout
+        HttpConnectionParams.setConnectionTimeout(get.getParams(), timeout);
+        // set socket timeout
+        HttpConnectionParams.setSoTimeout(get.getParams(), timeout);
+        try {
+            HttpResponse response = client.execute(get);
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return true;
+            }
+
+        } catch (Throwable e) {
+            log.error(e.getMessage(), e);
+        } finally {
+            get.releaseConnection();
+        }
+        return false;
     }
 
 }

@@ -2,10 +2,7 @@ package oliver.app.batch.service;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -14,6 +11,7 @@ import oliver.app.batch.constant.ProxyType;
 import oliver.app.batch.domain.Proxy;
 import oliver.app.batch.persistence.ProxyMapper;
 import oliver.app.batch.util.StringUtil;
+import oliver.app.batch.web.util.WebCrawlUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -115,6 +113,38 @@ public class ProxyService {
 
         log.info("[{}] new proxies added!", iCount);
         log.info("finish fetch proxy from http://www.cnproxy.com ...");
+
+    }
+
+    /**
+     * test all proxies
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void testProxies() {
+        List<Proxy> proxyList = proxyMapper.findAll();
+
+        for (Proxy proxy : proxyList) {
+            long begin = System.currentTimeMillis();
+            boolean available = WebCrawlUtil.testProxy(proxy, 5000);
+            Long responseTime = System.currentTimeMillis() - begin;
+            if (available && proxy.getStatus() == ProxyStatus.EXPIRED.getIndex()) {
+                proxy.setStatus(ProxyStatus.RECOVERED.getIndex());
+                proxy.setSpeed(responseTime.intValue());
+                log.info(proxy.toString()+" is RECOVERED.");
+            } else if (!available
+                    && (proxy.getStatus() == ProxyStatus.OK.getIndex() || proxy.getStatus() == ProxyStatus.RECOVERED
+                            .getIndex())) {
+                proxy.setStatus(ProxyStatus.EXPIRED.getIndex());
+                proxy.setSpeed(responseTime.intValue());
+                log.info(proxy.toString()+" is EXPIRED.");
+            }  else {
+                log.info(proxy.toString()+" is OK.");
+            }
+            proxy.setUpdateTime(new Date());
+            proxyMapper.update(proxy);
+
+        }
 
     }
 
