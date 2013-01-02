@@ -57,9 +57,9 @@ public class Proxy implements Serializable {
     private Date updateTime;
 
     /**
-     * proxy speed
+     * proxy responseTime
      */
-    private Integer speed;
+    private Integer responseTime;
 
     /**
      * note
@@ -138,12 +138,12 @@ public class Proxy implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getSpeed() {
-        return speed;
+    public Integer getResponseTime() {
+        return responseTime;
     }
 
-    public void setSpeed(Integer speed) {
-        this.speed = speed;
+    public void setResponseTime(Integer responseTime) {
+        this.responseTime = responseTime;
     }
 
     public String getNote() {

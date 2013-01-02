@@ -17,6 +17,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -130,19 +131,37 @@ public class ProxyService {
             Long responseTime = System.currentTimeMillis() - begin;
             if (available && proxy.getStatus() == ProxyStatus.EXPIRED.getIndex()) {
                 proxy.setStatus(ProxyStatus.RECOVERED.getIndex());
-                proxy.setSpeed(responseTime.intValue());
-                log.info(proxy.toString()+" is RECOVERED.");
+                proxy.setResponseTime(responseTime.intValue());
+                log.info(proxy.toString() + " is RECOVERED.");
             } else if (!available
                     && (proxy.getStatus() == ProxyStatus.OK.getIndex() || proxy.getStatus() == ProxyStatus.RECOVERED
                             .getIndex())) {
                 proxy.setStatus(ProxyStatus.EXPIRED.getIndex());
-                proxy.setSpeed(responseTime.intValue());
-                log.info(proxy.toString()+" is EXPIRED.");
-            }  else {
-                log.info(proxy.toString()+" is OK.");
+                proxy.setResponseTime(responseTime.intValue());
+                log.info(proxy.toString() + " is EXPIRED.");
+            } else {
+                log.info(proxy.toString() + " is OK.");
             }
             proxy.setUpdateTime(new Date());
             proxyMapper.update(proxy);
+
+        }
+
+    }
+
+    @Test
+    public void fetch2() {
+        String baseUrl = "http://www.freeproxylists.net/zh/?page={0}";
+
+        for (int i = 1; i <= 1; i++) {
+            String url = MessageFormat.format(baseUrl, i);
+            try {
+                Document document = Jsoup.connect(url).get();
+                Elements elements = document.select("table.DataGrid");
+                System.out.println(elements.html());
+            } catch (IOException e) {
+                log.error(e.getMessage(),e);
+            }
 
         }
 

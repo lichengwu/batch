@@ -7,7 +7,7 @@
     <cache/>
 
     <sql id="proxyFullColumn">
-        id,status,type,ip,port,username,password,add_time as addTime,update_time as updateTime,speed,note
+        id,status,type,ip,port,username,password,add_time as addTime,update_time as updateTime,response_time,note
     </sql>
 
     <resultMap id="proxyList" type="Proxy" autoMapping="true">
@@ -31,9 +31,9 @@
 
     <insert id="insert" parameterType="oliver.app.batch.domain.Proxy">
         INSERT INTO proxy
-        (status,ip,port,type,username,password,add_time,update_time,speed,note)
+        (status,ip,port,type,username,password,add_time,update_time,response_time,note)
         VALUES
-        (#{status},inet_aton(#{ip}),#{port},#{type},#{username},#{password},#{addTime},#{updateTime},#{speed},#{note})
+        (#{status},inet_aton(#{ip}),#{port},#{type},#{username},#{password},#{addTime},#{updateTime},#{responseTime},#{note})
     </insert>
 
     <select id="findAll" resultType="Proxy">
@@ -51,7 +51,7 @@
         password = #{password},
         add_time = #{addTime},
         update_time = #{updateTime},
-        speed = #{speed},
+        response_time = #{responseTime},
         note = #{note}
         WHERE id=${id};
     </update>

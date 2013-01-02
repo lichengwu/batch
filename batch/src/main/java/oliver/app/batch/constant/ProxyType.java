@@ -9,8 +9,8 @@ package oliver.app.batch.constant;
  */
 public enum ProxyType {
 
-    HTTP(1, "HTTP"), FTP(2, "FTP"), SOCKS4(3, "SOCKS4"), SOCKS5(4, "SOCKS5"), TELNET(5, "TELNET"), UNKNOWN(
-            99, "UNKNOWN");
+    HTTP(1, "HTTP"), FTP(2, "FTP"), SOCKS4(3, "SOCKS4"), SOCKS5(4, "SOCKS5"), TELNET(5, "TELNET"), HTTPS(
+            6, "HTTPS"), UNKNOWN(99, "UNKNOWN");
 
     private Integer index;
 
