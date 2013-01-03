@@ -3,7 +3,10 @@ package oliver.app.batch.service;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 import oliver.app.batch.constant.ProxyStatus;
@@ -35,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProxyService {
 
     private static final Logger log = LoggerFactory.getLogger(ProxyService.class);
+
+    private final ExecutorService exec = Executors.newFixedThreadPool(5);
 
     @Resource
     private ProxyMapper proxyMapper;
@@ -123,27 +128,34 @@ public class ProxyService {
     @Transactional
     @Scheduled(cron = "0 0 0 * * ?")
     public void testProxies() {
+
         List<Proxy> proxyList = proxyMapper.findAll();
 
-        for (Proxy proxy : proxyList) {
-            long begin = System.currentTimeMillis();
-            boolean available = WebCrawlUtil.testProxy(proxy, 5000);
-            Long responseTime = System.currentTimeMillis() - begin;
-            if (available && proxy.getStatus() == ProxyStatus.EXPIRED.getIndex()) {
-                proxy.setStatus(ProxyStatus.RECOVERED.getIndex());
-                proxy.setResponseTime(responseTime.intValue());
-                log.info(proxy.toString() + " is RECOVERED.");
-            } else if (!available
-                    && (proxy.getStatus() == ProxyStatus.OK.getIndex() || proxy.getStatus() == ProxyStatus.RECOVERED
-                            .getIndex())) {
-                proxy.setStatus(ProxyStatus.EXPIRED.getIndex());
-                proxy.setResponseTime(responseTime.intValue());
-                log.info(proxy.toString() + " is EXPIRED.");
-            } else {
-                log.info(proxy.toString() + " is OK.");
-            }
-            proxy.setUpdateTime(new Date());
-            proxyMapper.update(proxy);
+        for (final Proxy proxy : proxyList) {
+
+            exec.submit(new Runnable() {
+                @Override
+                public void run() {
+                    long begin = System.currentTimeMillis();
+                    boolean available = WebCrawlUtil.testProxy(proxy, 5000);
+                    Long responseTime = System.currentTimeMillis() - begin;
+                    if (available && proxy.getStatus() == ProxyStatus.EXPIRED.getIndex()) {
+                        proxy.setStatus(ProxyStatus.RECOVERED.getIndex());
+                        proxy.setResponseTime(responseTime.intValue());
+                        log.info(proxy.toString() + " is RECOVERED.");
+                    } else if (!available
+                            && (proxy.getStatus() == ProxyStatus.OK.getIndex() || proxy.getStatus() == ProxyStatus.RECOVERED
+                                    .getIndex())) {
+                        proxy.setStatus(ProxyStatus.EXPIRED.getIndex());
+                        proxy.setResponseTime(responseTime.intValue());
+                        log.info(proxy.toString() + " is EXPIRED.");
+                    } else {
+                        log.info(proxy.toString() + " is OK.");
+                    }
+                    proxy.setUpdateTime(new Date());
+                    proxyMapper.update(proxy);
+                }
+            });
 
         }
 
@@ -160,7 +172,7 @@ public class ProxyService {
                 Elements elements = document.select("table.DataGrid");
                 System.out.println(elements.html());
             } catch (IOException e) {
-                log.error(e.getMessage(),e);
+                log.error(e.getMessage(), e);
             }
 
         }
@@ -178,6 +190,15 @@ public class ProxyService {
         proxy.setAddTime(new Date());
 
         proxyMapper.insert(proxy);
+    }
+
+    /**
+     * destroy bean
+     */
+    @PreDestroy
+    public final void destroy() {
+        // show down exec
+        exec.shutdown();
     }
 
 }

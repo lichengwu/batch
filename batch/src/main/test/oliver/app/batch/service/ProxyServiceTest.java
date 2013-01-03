@@ -5,6 +5,8 @@ import oliver.app.batch.util.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * test for proxy
  * 
@@ -24,7 +26,9 @@ public class ProxyServiceTest extends BaseTest {
     }
 
     @Test
-    public void testCheck(){
+    public void testCheck() throws InterruptedException {
         proxyService.testProxies();
+
+        TimeUnit.SECONDS.sleep(100);
     }
 }

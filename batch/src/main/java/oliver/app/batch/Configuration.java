@@ -69,6 +69,7 @@ public final class Configuration {
                     }
                 });
         PROPERTIES.putAll(data);
+        PROPERTIES.list(System.out);
     }
 
     /**
@@ -98,6 +99,19 @@ public final class Configuration {
             return Integer.valueOf(key);
         }
         return null;
+    }
+
+    /**
+     * get all properties in {@link Configuration}
+     * 
+     * @return
+     */
+    public static Properties getProperties() {
+        Properties props = new Properties();
+        for (String key : PROPERTIES.stringPropertyNames()) {
+            props.put(key, PROPERTIES.get(key));
+        }
+        return props;
     }
 
 }
