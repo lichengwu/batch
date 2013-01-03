@@ -199,7 +199,7 @@ public class ProxyService {
      * @return
      */
     public List<Proxy> getTopN(int top) {
-        return proxyMapper.findTopN(top);
+        return proxyMapper.getTopProxy(top);
     }
 
     /**

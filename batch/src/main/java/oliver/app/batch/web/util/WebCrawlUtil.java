@@ -126,6 +126,15 @@ public final class WebCrawlUtil {
         HttpConnectionParams.setConnectionTimeout(get.getParams(), getTimeout());
         // set socket timeout
         HttpConnectionParams.setSoTimeout(get.getParams(), getTimeout());
+
+        get.setHeader("User-Agent",
+                "Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0");
+        get.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+        get.setHeader("Accept-Language", "zh-cn,zh;q=0.5");
+        get.setHeader("Accept-Encoding", "GB2312,utf-8;q=0.7,*;q=0.7");
+        get.setHeader("Referrer", "http://movie.douban.com/");
+        get.setHeader("Cache-Control", "max-age=0");
+
         try {
             HttpResponse response = client.execute(get);
 

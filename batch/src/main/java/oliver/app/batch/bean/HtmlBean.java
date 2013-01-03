@@ -1,5 +1,7 @@
 package oliver.app.batch.bean;
 
+import org.jsoup.nodes.Document;
+
 /**
  * Bean for hold HTML
  * 
@@ -8,6 +10,12 @@ package oliver.app.batch.bean;
  * @created 2013-01-03 4:37 PM
  */
 public class HtmlBean {
+
+    public HtmlBean(String url, Document document) {
+        this.url = url;
+        this.document = document;
+    }
+
     /**
      * url
      */
@@ -15,7 +23,7 @@ public class HtmlBean {
     /**
      * html content
      */
-    private String html;
+    private Document document;
 
     public String getUrl() {
         return url;
@@ -25,11 +33,11 @@ public class HtmlBean {
         this.url = url;
     }
 
-    public String getHtml() {
-        return html;
+    public Document getDocument() {
+        return document;
     }
 
-    public void setHtml(String html) {
-        this.html = html;
+    public void setDocument(Document document) {
+        this.document = document;
     }
 }
