@@ -193,6 +193,16 @@ public class ProxyService {
     }
 
     /**
+     * get top N {@link Proxy} by response time
+     * 
+     * @param top
+     * @return
+     */
+    public List<Proxy> getTopN(int top) {
+        return proxyMapper.findTopN(top);
+    }
+
+    /**
      * destroy bean
      */
     @PreDestroy

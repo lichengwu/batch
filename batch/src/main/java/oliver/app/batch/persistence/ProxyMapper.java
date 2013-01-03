@@ -52,4 +52,12 @@ public interface ProxyMapper {
      */
     void update(Proxy proxy);
 
+    /**
+     * find top n proxy
+     * 
+     * @param top
+     * @return
+     */
+    List<Proxy> findTopN(int top);
+
 }
