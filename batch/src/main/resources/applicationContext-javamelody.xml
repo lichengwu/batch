@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <bean id="monitoringAdvisor" class="net.bull.javamelody.MonitoringSpringAdvisor">
+        <property name="pointcut">
+            <bean class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+                <property name="pattern" value=".*service.*"></property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="monitoringAdvice" class="net.bull.javamelody.MonitoringSpringInterceptor"/>
+    <bean id="monitoringPointcut" class="net.bull.javamelody.MonitoredWithAnnotationPointcut"/>
+
+    <bean id="springDataSourceBeanPostProcessor" class="net.bull.javamelody.SpringDataSourceBeanPostProcessor"/>
+
+    <aop:config>
+        <aop:advisor advice-ref="monitoringAdvice" pointcut-ref="monitoringPointcut"/>
+    </aop:config>
+
+</beans>
