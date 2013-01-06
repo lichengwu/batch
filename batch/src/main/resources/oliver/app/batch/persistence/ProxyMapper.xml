@@ -7,7 +7,7 @@
     <cache/>
 
     <sql id="proxyFullColumn">
-        id,status,type,ip,port,username,password,add_time as addTime,update_time as updateTime,response_time,note
+        id,status,type,inet_ntoa(ip) as ip,port,username,password,add_time as addTime,update_time as updateTime,response_time,note
     </sql>
 
     <resultMap id="proxyList" type="Proxy" autoMapping="true">

@@ -37,7 +37,7 @@ public class Proxy implements Serializable {
     private Integer port;
 
     /**
-     * proxy usename
+     * proxy username
      */
     private String username;
 
