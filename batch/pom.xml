@@ -286,7 +286,7 @@
         <pluginRepository>
             <id>repository.springframework.maven.milestone</id>
             <name>Spring Framework Maven Milestone Repository</name>
-            <url>http://repository.sonatype.org/content/groups/public/</url>
+            <url>http://maven.springframework.org/milestone</url>
         </pluginRepository>
     </pluginRepositories>
 </project>

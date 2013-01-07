@@ -3,7 +3,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>batch Web Application</display-name>
+    <display-name>batch app</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
