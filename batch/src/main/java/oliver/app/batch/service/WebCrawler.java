@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import oliver.app.batch.concurrent.TrackingExecutor;
@@ -25,15 +27,22 @@ public abstract class WebCrawler implements Lifecycle {
 
     private static Logger log = LoggerFactory.getLogger(WebCrawler.class);
 
+    /**
+     * min thread number
+     */
+    private static final int DEFAULT_MIN_THREAD_NUM = 0;
+
+    /**
+     * max thread number
+     */
+    private static final int DEFAULT_MAX_THREAD_NUM = Runtime.getRuntime().availableProcessors() + 1;
+
     private TrackingExecutor exec;
 
     /**
      * store urls
      */
     private Set<URL> urls = new LinkedHashSet<URL>();
-
-    private WebCrawler() {
-    }
 
     /**
      * set {@link URL} task 4 {@link WebCrawler}
@@ -44,7 +53,7 @@ public abstract class WebCrawler implements Lifecycle {
         if (isRunning()) {
             throw new IllegalStateException("can not set task because : WebCrawler already start");
         }
-        urls.addAll(urls);
+        this.urls.addAll(urls);
     }
 
     /**
@@ -56,16 +65,44 @@ public abstract class WebCrawler implements Lifecycle {
     protected abstract List<URL> processUrl(URL url);
 
     /**
+     * custom max thread
+     * 
+     * @return
+     */
+    protected abstract int getMaxThreadNum();
+
+    /**
+     * custom min thread
+     * 
+     * @return
+     */
+    protected abstract int getMinThreadNum();
+
+    /**
      * start the service
      */
     @Override
     public synchronized void start() {
 
+        log.info("start WebCrawler...");
+
         if (exec != null) {
             throw new IllegalStateException("WebCrawler already start");
         }
 
-        exec = new TrackingExecutor(Executors.newCachedThreadPool());
+        ExecutorService baseExec = Executors.newCachedThreadPool();
+
+        // custom thread pool
+        if (baseExec instanceof ThreadPoolExecutor) {
+            ThreadPoolExecutor tpe = ((ThreadPoolExecutor) baseExec);
+            tpe.setCorePoolSize(getMinThreadNum() < 0 ? DEFAULT_MIN_THREAD_NUM : getMinThreadNum());
+            tpe.setMaximumPoolSize(getMaxThreadNum() <= 0 ? DEFAULT_MAX_THREAD_NUM
+                    : getMaxThreadNum());
+            tpe.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        }
+
+        exec = new TrackingExecutor(baseExec);
+
         for (URL url : urls) {
             submitCrawlTask(url);
         }
@@ -77,6 +114,8 @@ public abstract class WebCrawler implements Lifecycle {
      */
     @Override
     public synchronized void stop() {
+
+        log.info("stop WebCrawler...");
 
         if (exec == null || exec.isTerminated()) {
             throw new IllegalStateException("WebCrawler already stop");

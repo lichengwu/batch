@@ -139,7 +139,7 @@ public final class WebCrawlUtil {
             HttpResponse response = client.execute(get);
 
             if (response.getStatusLine().getStatusCode() == 200) {
-                html = EntityUtils.toString(response.getEntity());
+                html = EntityUtils.toString(response.getEntity(),"utf-8");
             }
 
         } catch (IOException e) {
