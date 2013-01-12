@@ -1,6 +1,6 @@
 package oliver.app.batch.web.util;
 
-import oliver.app.batch.Matchable;
+import oliver.app.batch.core.Matchable;
 
 /**
  * util for parse douban.com

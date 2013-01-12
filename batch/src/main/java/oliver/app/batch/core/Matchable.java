@@ -1,4 +1,4 @@
-package oliver.app.batch;
+package oliver.app.batch.core;
 
 /**
  * interface to declare whether an value match this class instance
