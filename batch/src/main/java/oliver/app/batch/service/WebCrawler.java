@@ -62,7 +62,7 @@ public abstract class WebCrawler implements Lifecycle {
      * @param url
      * @return
      */
-    protected abstract List<URL> processUrl(URL url);
+    protected abstract Collection<URL> processUrl(URL url);
 
     /**
      * custom max thread
