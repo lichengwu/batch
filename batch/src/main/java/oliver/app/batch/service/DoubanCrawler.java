@@ -86,9 +86,10 @@ public class DoubanCrawler extends WebCrawler {
             }
         }
 
-        linkInPage.removeAll(processedUrl);
-
-        processedUrl.addAll(linkInPage);
+        if (!linkInPage.isEmpty()) {
+            linkInPage.removeAll(processedUrl);
+            processedUrl.addAll(linkInPage);
+        }
 
         return linkInPage;
     }

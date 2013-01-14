@@ -1,6 +1,13 @@
 package oliver.app.batch.web.util;
 
+import java.util.Date;
+
+import oliver.app.batch.core.DomainParser;
 import oliver.app.batch.core.Matchable;
+import oliver.app.batch.domain.douban.Movie;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  * util for parse douban.com
@@ -27,7 +34,7 @@ public final class DoubanUtil {
         return null;
     }
 
-    public enum DoubanType implements Matchable {
+    public enum DoubanType implements Matchable, DomainParser<Object> {
         /**
          * movie
          */
@@ -39,6 +46,19 @@ public final class DoubanUtil {
                 }
                 String url = (String) value;
                 return url.matches("http://movie.douban.com/subject/[0-9]+/");
+            }
+
+            @Override
+            public Movie parse(Document document) {
+                Elements elements = document.select("#wrapper");
+
+                Date now = new Date();
+                Movie movie = new Movie();
+                movie.setAddTime(now);
+                movie.setModTime(now);
+                movie.setMovieName(elements.select("h1 > span").first().text());
+
+                return null;
             }
         },
         /**
@@ -53,6 +73,11 @@ public final class DoubanUtil {
                 String url = (String) value;
                 return url.matches("http://book.douban.com/subject/[0-9]+/");
             }
+
+            @Override
+            public Object parse(Document document) {
+                return null;
+            }
         },
         /**
          * music
@@ -65,6 +90,11 @@ public final class DoubanUtil {
                 }
                 String url = (String) value;
                 return url.matches("http://music.douban.com/subject/[0-9]+/");
+            }
+
+            @Override
+            public Object parse(Document document) {
+                return null;
             }
         };
 
