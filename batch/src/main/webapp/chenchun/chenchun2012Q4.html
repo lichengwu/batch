@@ -1,0 +1,132 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=1024"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title></title>
+    <link href="impress-demo.css" rel="stylesheet"/>
+</head>
+<body class="impress-not-supported">
+
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified
+        version of this presentation.</p>
+
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress">
+
+    <div class="step" data-x="0" data-y="0">
+        <div style="text-align: center; margin: 0 auto; position: relative;top: 50%;">
+            <span style="font-size: 80px">2012 Q4 <strong>总结</strong></span></br> </br>
+            <span style="position: relative;left: 20%;font-size: 30px;">-- 陈纯</span>
+        </div>
+    </div>
+
+    <div class="step" data-x="-300" data-y="-500" data-rotate="90" style="text-align: center; margin: 0 auto; position: relative;top: 50%;">
+        <h1><strong>主要工作</strong></h1>
+    </div>
+
+    <div class="step" data-x="-500" data-y="-500" data-rotate="90" data-scale="0.5" style="width: 1000px">
+        <div style="display: inline; padding-top: 20px">
+            <div style="width: 45%; float: left">
+                <h2 style="font-size: 40px; font-weight: bold"><strong>合同</strong></h2>
+                <ul style="list-style-type: square;font-size: 20px">
+                    <li>新版纸质合同（试点中）、商家自提（试点中）</li>
+                    <li>项目延期（10月23日到11月13日），项目延期功能</li>
+                    <li>合同关联商家资质PMC（试点中）</li>
+                    <li>合同数据同步（公共化，抽象化）</li>
+                    <li>Javamelody权限验证、合同操作日志</li>
+                    <li>COS help</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" data-x="-500" data-y="-500" data-rotate="90" data-scale="0.5" style="width: 1000px">
+        <div style="display: inline; padding-top: 20px">
+            <div style="width: 45%; float: left">
+                <h2 style="font-size: 40px; font-weight: bold"><strong>合同</strong></h2>
+                <ul style="list-style-type: square;font-size: 20px">
+                    <li>新版纸质合同（试点中）、商家自提（试点中）</li>
+                    <li>项目延期（10月23日到11月13日），项目延期功能</li>
+                    <li>合同关联商家资质PMC</li>
+                    <li>合同数据同步（公共化，抽象化）</li>
+                    <li>Javamelody权限验证、合同操作日志</li>
+                    <li>COS help</li>
+                </ul>
+            </div>
+            <div style="width: 45%; float: left; margin-left: 50px;">
+                <h2 style="font-size: 40px"><strong>编辑</strong></h2>
+                <ul style="list-style-type: square;font-size: 20px">
+                    <li>新版图片列表上线，商家图推送给MDC</li>
+                    <li>文字素材功能，项目模版设置</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="1000" style="text-align: center; margin: 0 auto; position: relative;top: 50%;">
+        <h1><strong>学习、成长</strong></h1>
+    </div>
+
+    <div class="step" data-x="0" data-y="700">
+        <div>
+            <ul style="list-style-type: square;font-size: 30px; line-height: 60px;">
+                <li>ClassLoader的namespace作用，hotswap</li>
+                <li>Spring源代码中运用的设计模式</li>
+                <li>python函数式编程</li>
+                <li>《深入理解JVM》《Effective Java》</li>
+                <li>《数学之美》数学模型与自然语言的处理</li>
+                <li>思考更多的问题</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="step" data-x="1200" data-y="-1000" data-rotate-x="-40" style="text-align: center; margin: 0 auto; position: relative;top: 50%;">
+        <h1 style="color:red; font-size: 100px;font-weight: bold"><strong>问题</strong></h1>
+    </div>
+
+    <div class="step" data-x="1200" data-y="-500" data-rotate-x="-40" style="margin: 0 auto; position: relative;top: 50%;">
+        <div>
+            <ul style="list-style-type: square;font-size: 30px;line-height: 60px">
+                <li>事务性问题。连续两次提审，两个上单表。</li>
+                <li>数据同步问题。数据入口有多个，同步异步混乱</li>
+                <li>复杂页面响应时间问题</li>
+                <li>积累，学以致用</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="step" data-x="1200" data-y="0" data-rotate-x="-40" style="margin: 0 auto; position: relative;top: 50%;">
+        <h1 style="color:#5f9ea0; font-size: 100px;font-weight: bold"><strong>解决思路</strong></h1>
+    </div>
+
+    <div class="step" data-x="1400" data-y="500" data-rotate-x="-40" style="margin: 0 auto; position: relative;top: 50%;">
+        <div>
+            <ul style="list-style-type: square;font-size: 30px;line-height: 60px">
+                <li>事务性问题借鉴AtomicInteger，CAS（Compare And Swap）乐观锁</li>
+                <li>抽象出来实现一个同步的功能模块，异步队列</li>
+                <li>统计数据的缓存，不同业务数据分块并行加载</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="step" data-x="0" data-y="1500" style="margin: 0 auto; position: relative;top: 50%;">
+        <h1 style="font-size: 100px;font-weight: bold"><strong>2013 <span style="color: #ff0000">目标</span></strong></h1>
+    </div>
+
+    <div class="step" data-x="-100" data-y="1500" data-z="-100" style="margin: 0 auto; position: relative;top: 50%;" data-scale="0.01" >
+        <h1 style="font-size: 100px;"><strong><span style="color: #ff0000;font-weight: bold">凶残的</span>  成长</strong></h1>
+    </div>
+
+    <div id="overview" class="step" data-x="300" data-y="0" data-scale="3"></div>
+
+</div>
+<script src="impress.js"></script>
+<script>impress().init();</script>
+
+</body>
+</html>
