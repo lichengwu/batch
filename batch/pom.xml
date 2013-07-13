@@ -2,11 +2,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>oliver.app</groupId>
+    <groupId>cn.lichengwu</groupId>
     <artifactId>batch</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>batch Maven Webapp</name>
+    <name>batch</name>
     <url>http://maven.apache.org</url>
 
     <properties>
