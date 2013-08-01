@@ -10,6 +10,6 @@
     <context:component-scan base-package="oliver.app.batch"/>
 
     <!-- 系统初始化Bean，进行一些初始化操作 -->
-    <bean id="systemInitializer" class="oliver.app.batch.web.SystemInitializer" init-method="init"/>
+    <bean id="systemInitializer" class="cn.lichengwu.app.batch.web.SystemInitializer" init-method="init"/>
 
 </beans>

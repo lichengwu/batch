@@ -10,7 +10,7 @@
     <context:annotation-config/>
 
     <!-- 把标记了@Controller注解的类转换为bean -->
-    <context:component-scan base-package="oliver.app.batch.web.controller"/>
+    <context:component-scan base-package="cn.lichengwu.app.batch.web.controller"/>
 
     <mvc:annotation-driven/>
 
@@ -67,7 +67,7 @@
         <!-- request log interceptor -->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="oliver.app.batch.web.interceptor.LogInterceptor"/>
+            <bean class="cn.lichengwu.app.batch.web.interceptor.LogInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
