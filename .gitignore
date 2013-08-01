@@ -1,7 +1,7 @@
 /.idea/*
-batch/.idea/*
-batch/target/*
-batch/batch.iml
+.idea/*
+target/*
+batch.iml
 *.class
 
 # Package Files #
