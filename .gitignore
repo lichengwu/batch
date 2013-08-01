@@ -8,3 +8,4 @@ batch.iml
 *.jar
 *.war
 *.ear
+app.batch.*

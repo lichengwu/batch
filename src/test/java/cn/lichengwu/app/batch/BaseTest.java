@@ -1,10 +1,8 @@
-package cn.lichengwu.app.batch.util;
+package cn.lichengwu.app.batch;
 
 import java.io.FileNotFoundException;
 
 import javax.annotation.Resource;
-
-import cn.lichengwu.app.batch.Configuration;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
