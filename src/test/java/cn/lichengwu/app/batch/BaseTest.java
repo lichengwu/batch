@@ -1,9 +1,5 @@
 package cn.lichengwu.app.batch;
 
-import java.io.FileNotFoundException;
-
-import javax.annotation.Resource;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Log4jConfigurer;
+
+import javax.annotation.Resource;
+import java.io.FileNotFoundException;
 
 /**
  * BaseTest for extends
